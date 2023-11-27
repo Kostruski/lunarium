@@ -15,7 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
       document.removeEventListener('mousemove', updateStarAppearance);
     };
   }, []);
-  return <div className="h-screen w-screen">{children}</div>;
+  return <div className="h-screen w-screen -z-50">{children}</div>;
 };
 
 export default Layout;

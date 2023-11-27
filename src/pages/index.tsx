@@ -15,7 +15,7 @@ export default function Home() {
       method: 'post',
       url: '/api/hello',
       data: {
-        question: 'Czy praca ma sens ?',
+        question: 'Napisz "działa"',
       },
     })
       .then((res) => {
@@ -30,8 +30,8 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <button onClick={postQuestion}>Czy praca ma sens?</button>
+    <div className="question bg-white">
+      <button onClick={postQuestion}>Napisz 'działa'</button>
       <div>
         <p>{message}</p>
       </div>

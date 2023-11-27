@@ -9,10 +9,11 @@ export function createStar(): HTMLDivElement {
   star.className = 'star';
 
   // Set random position, size, and opacity for the star
-  const xPos: number = getRandomInt(0, window.innerWidth);
-  const yPos: number = getRandomInt(0, window.innerHeight);
-  const size: number = getRandomInt(1, 3);
-  const opacity: number = Math.random();
+  const xPos: number = getRandomInt(0, document.body.clientWidth);
+  const yPos: number = getRandomInt(0, document.body.clientHeight);
+	const size: number = getRandomInt( 2, 5 );
+	const opacity = size/5
+
 
   star.style.width = `${size}px`;
   star.style.height = `${size}px`;
@@ -24,16 +25,36 @@ export function createStar(): HTMLDivElement {
   return star;
 }
 
+export function updateStarPositions(): void {
+  const stars: NodeListOf<HTMLDivElement> = document.querySelectorAll('.star');
+  const yPos = window.scrollY;
+  const starScrollSpeed = 0.3;
+
+  stars.forEach((star) => {
+    const width = star.offsetWidth;
+
+    star.style.transform = `translateY(-${
+      yPos * Number(width) * starScrollSpeed
+    }px)`;
+  });
+}
+
 // Function to generate stars and add them to the body
 export function createStars(): void {
   const numStars: number = Math.round(
-    (window.innerWidth * window.innerHeight) / 7000,
+    (document.body.clientWidth * document.body.clientHeight) / 8000,
   ); // Adjust star density based on screen size
 
   for (let i = 0; i < numStars; i++) {
     const star = createStar();
     document.body.appendChild(star);
   }
+
+  window.addEventListener('scroll', () => {
+    updateStarPositions();
+	} );
+
+	console.log(document.body.clientHeight);
 }
 
 // Update star brightness and add glow effect on hover
@@ -56,7 +77,9 @@ export function updateStarAppearance(event: MouseEvent): void {
     // Adjust star brightness based on distance to the mouse cursor
     if (distance < maxDistance) {
       star.style.opacity = `1`;
-      star.style.boxShadow = `rgba(255, 255, 255) 0 0 ${glowStrength * 2}px ${glowStrength}px`;
+      star.style.boxShadow = `rgba(255, 255, 255) 0 0 ${
+        glowStrength * 2
+      }px ${glowStrength}px`;
     } else {
       star.style.opacity = `${originalOpacity}`;
       star.style.boxShadow = '0 0 0 0 rgba(255, 255, 255)';

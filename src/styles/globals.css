@@ -1,29 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
 
 .star {
   position: absolute;
   background-color: #fff;
   border-radius: 50%;
-  transition: filter 0.2s ease-out;
 }
 
-body {
-	background: linear-gradient(-45deg, #080808, #0c012c, #06020f, #050014);
-	background-size: 400% 400%;
-	animation: gradient 45s ease infinite;
-	height: 150vh;
+.background {
+  background-color: #080808;
+  height: 150vh;
+  overflow: hidden;
+  position: relative;
+  background-image: url('/space.jpg'); /* Replace 'your-image-url.jpg' with the URL or path to your image */
+  background-size: cover;
+  background-position: center;
 }
 
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+#container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }

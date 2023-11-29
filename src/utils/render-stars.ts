@@ -1,19 +1,28 @@
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 // Function to generate a random number within a range
 function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+let container: HTMLElement | null;
+let numStars = 0;
+
 // Function to create a star element
-export function createStar(): HTMLDivElement {
+export function createStar(): HTMLDivElement | null {
+  if (!container) return null;
+
   const star: HTMLDivElement = document.createElement('div');
-  star.className = 'star';
+  star.className = `star`;
 
   // Set random position, size, and opacity for the star
-  const xPos: number = getRandomInt(0, document.body.clientWidth);
-  const yPos: number = getRandomInt(0, document.body.clientHeight);
-	const size: number = getRandomInt( 2, 5 );
-	const opacity = size/5
-
+  const xPos: number = getRandomInt(0, container.clientWidth);
+  const yPos: number = getRandomInt(0, container.clientHeight);
+  const size: number = getRandomInt(1, 4);
+  const opacity: number = Math.random();
 
   star.style.width = `${size}px`;
   star.style.height = `${size}px`;
@@ -28,33 +37,35 @@ export function createStar(): HTMLDivElement {
 export function updateStarPositions(): void {
   const stars: NodeListOf<HTMLDivElement> = document.querySelectorAll('.star');
   const yPos = window.scrollY;
-  const starScrollSpeed = 0.3;
+  const starsSpeed = 0.5;
 
-  stars.forEach((star) => {
-    const width = star.offsetWidth;
-
-    star.style.transform = `translateY(-${
-      yPos * Number(width) * starScrollSpeed
-    }px)`;
+  // stars.forEach((star) => {
+  // 	const width = star.offsetWidth;
+  // 	console.log(star.className)
+  //   gsap.to(star.className, { y: yPos * Number(width) * starsSpeed * -1 });
+  // });
+  gsap.to('.star', {
+    y: (index, target) => {
+      const width = target.offsetWidth;
+      return yPos * Number(width) * starsSpeed * -1;
+    },
   });
 }
 
 // Function to generate stars and add them to the body
 export function createStars(): void {
-  const numStars: number = Math.round(
-    (document.body.clientWidth * document.body.clientHeight) / 8000,
+  container = document.getElementById('container');
+  if (!container) return;
+  numStars = Math.round(
+    (container.clientWidth * container.clientHeight) / 7000,
   ); // Adjust star density based on screen size
 
   for (let i = 0; i < numStars; i++) {
     const star = createStar();
-    document.body.appendChild(star);
+    if (star) container.appendChild(star);
   }
 
-  window.addEventListener('scroll', () => {
-    updateStarPositions();
-	} );
-
-	console.log(document.body.clientHeight);
+  window.addEventListener('scroll', updateStarPositions);
 }
 
 // Update star brightness and add glow effect on hover

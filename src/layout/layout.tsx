@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { createStars, updateStarAppearance} from '../utils/render-stars';
+import { createStars, updateStarAppearance } from '../utils/render-stars';
+
 
 type LayoutProps = {
   children: JSX.Element;
@@ -15,7 +16,13 @@ const Layout = ({ children }: LayoutProps) => {
       document.removeEventListener('mousemove', updateStarAppearance);
     };
   }, []);
-  return <div className="h-screen w-screen -z-50">{children}</div>;
+  return (
+    <div className="background">
+      <div id="container" className="h-[200vh]">
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default Layout;

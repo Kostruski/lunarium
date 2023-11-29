@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { createStars, updateStarAppearance } from '../utils/render-stars';
 
-
 type LayoutProps = {
   children: JSX.Element;
 };
@@ -17,11 +16,15 @@ const Layout = ({ children }: LayoutProps) => {
     };
   }, []);
   return (
-    <div className="background">
-      <div id="container" className="h-[200vh]">
-        {children}
+    <>
+      <div className="background absolute">
+        <div
+          id="container"
+          className="h-[200vh] w-screen top-0 left-0 absolute"
+        ></div>
       </div>
-    </div>
+      {children}
+    </>
   );
 };
 

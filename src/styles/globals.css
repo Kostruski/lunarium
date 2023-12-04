@@ -4,6 +4,10 @@
 
 @import 'tailwindcss/utilities';
 
+* {
+	box-sizing: border-box !important;
+}
+
 .star {
   position: absolute;
   background-color: #fff;
@@ -12,12 +16,10 @@
 
 .background {
   background-color: #080808;
-  height: 150vh;
+  min-height: 100vh;
   width: 100%;
   overflow: hidden;
   position: absolute;
-  top: 0;
-  left: 0;
   background-image: url('/space.jpg'); /* Replace 'your-image-url.jpg' with the URL or path to your image */
   background-size: cover;
   background-position: center;
@@ -26,7 +28,6 @@
 
 #container {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
+  min-height: 100vh;
 }

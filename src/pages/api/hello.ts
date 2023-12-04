@@ -26,9 +26,11 @@ function runMiddleware(
       if (result instanceof Error) {
         res.status(404);
         return reject(result);
-      }
-      const answer = await mainAi(req.body.question);
-      res.status(200).json({ answer });
+			}
+
+			const answer = await mainAi( req.body.question, req.body.cards );
+
+			res.status(200).json({ answer });
       resolve();
     });
   });

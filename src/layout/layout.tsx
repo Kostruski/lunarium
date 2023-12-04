@@ -16,15 +16,12 @@ const Layout = ({ children }: LayoutProps) => {
     };
   }, []);
   return (
-    <>
-      <div className="background absolute">
-        <div
-          id="container"
-          className="h-[200vh] w-screen top-0 left-0 absolute"
-        ></div>
+    <div className="min-h-screen w-screen">
+      <div className="background">
+        <div id="container"></div>
       </div>
       {children}
-    </>
+    </div>
   );
 };
 

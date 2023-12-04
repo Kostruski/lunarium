@@ -1,19 +1,26 @@
 import gsap from 'gsap';
 import { Ref } from 'react';
+import tarotCards from './all-cards';
 
-export const NUMBER_OF_CARDS = 10; // You can adjust the number of cards
+export const NUMBER_OF_CARDS = 20; // You can adjust the number of cards
 export const CARD_WIDTH = 100;
 export const CARD_HEIGHT = 160;
 export const getRandomRotation = () => Math.random() * 360;
 
-export const flipCard = (cardId: string, index: number) => {
+export const flipCard = (
+  cardId: string,
+  index: number,
+  backgroundUrl = '/fool.jpg',
+) => {
   if (!cardId) return;
 
-	const card = document.getElementById( cardId );
+  const card = document.getElementById(cardId);
 
-	const dist = 30;
+  const dist = 30;
 
-  gsap.to(`#${cardId}`, {
+  console.log(backgroundUrl);
+
+  gsap.to(card, {
     rotationY: '+=90',
     x: `+=${dist}`,
     y: `+=${dist}`,
@@ -23,8 +30,10 @@ export const flipCard = (cardId: string, index: number) => {
       gsap.set(card, {
         zIndex: index,
         backgroundColor: '#fff',
-        background: 'url(/fool.jpg) no-repeat center center / cover',
+        // background: `url(${backgroundUrl}) no-repeat center center / cover`,
       });
+
+      if (card) card.textContent = backgroundUrl;
     },
   });
 
@@ -38,28 +47,34 @@ export const flipCard = (cardId: string, index: number) => {
   });
 };
 
-const slideCards = (cardsId: string[]) => {
+const slideCards = (
+  cardsId: string[],
+  callback: () => void,
+  offset: number,
+) => {
   let firstCard: HTMLElement | null = null;
-	let secondCard: HTMLElement | null = null;
-	let thirdCard: HTMLElement | null = null;
+  let secondCard: HTMLElement | null = null;
+  let thirdCard: HTMLElement | null = null;
 
   cardsId.forEach((id, index) => {
     if (index === 0) firstCard = document.getElementById(id);
-		if ( index === 1 ) secondCard = document.getElementById( id );
-		if (index === 2) thirdCard = document.getElementById(id);
+    if (index === 1) secondCard = document.getElementById(id);
+    if (index === 2) thirdCard = document.getElementById(id);
   });
 
   const distanceX = CARD_HEIGHT * 0.9;
   const distanceY = CARD_WIDTH * 0.9;
 
   gsap
-		.timeline( {
-			delay: 0.5, onComplete: () => {
-				console.log(firstCard, '....')
-				gsap.set([firstCard, secondCard, thirdCard], {
+    .timeline({
+      delay: 0.5,
+      onComplete: () => {
+        gsap.set([firstCard, secondCard, thirdCard], {
           boxShadow: '0px 0px 30px 5px rgba(231,232,240,1)',
         });
-		}})
+        callback();
+      },
+    })
     .to(firstCard, {
       x: `-=${distanceX}`,
       y: `+=${distanceY}`,
@@ -81,6 +96,7 @@ const slideCards = (cardsId: string[]) => {
 export const show3cards = (
   selectedCards: string[],
   ref: Ref<HTMLDivElement>,
+  callback: () => void,
 ) => {
   const container = typeof ref === 'function' ? null : ref?.current;
   if (!container) return;
@@ -88,15 +104,14 @@ export const show3cards = (
   const containerWidth = container.offsetWidth;
   const containerHeight = container.offsetHeight;
 
+  console.log(containerHeight, containerWidth);
+
   gsap.to('.card', {
     x: (i, el) => {
-      const middleX = containerWidth / 2 - el.offsetWidth / 2;
-
-      return selectedCards.includes(el.id) ? middleX : containerWidth * 1.5;
+      return selectedCards.includes(el.id) ? 0 : containerWidth * 1.5;
     }, // Move to the middle or slide out
     y: (i, el) => {
-      const middleY = containerHeight / 2 - el.offsetHeight / 2;
-      return selectedCards.includes(el.id) ? middleY : containerWidth * 1.5;
+      return selectedCards.includes(el.id) ? 0 : containerWidth * 1.5;
     },
     rotation: (i, el) => {
       return selectedCards.includes(el.id) ? 0 : 720;
@@ -106,6 +121,53 @@ export const show3cards = (
     }, // Fade out if not selected
     duration: 2,
     ease: 'power2.inOut',
-    onComplete: () => slideCards(selectedCards),
+    onComplete: () => slideCards(selectedCards, callback, containerWidth / 2),
   });
+};
+
+const getRandomPositionY = (containerSize: number, cardSize: number) => {
+  const modifier = Math.random() > 0.5 ? -1 : 1;
+  const offset = Math.random() * (containerSize / 2 - cardSize);
+  return modifier > 0 ? `+=${offset}` : `-=${offset}`;
+};
+
+const getRandomPositionX = (containerSize: number, cardSize: number) => {
+  const modifier = Math.random() > 0.5 ? -1 : 1;
+  const offset = Math.random() * (containerSize / 2 - cardSize);
+  return modifier > 0
+    ? `+=${Math.random() * (containerSize * 0.75 - cardSize)}`
+    : `-=${Math.random() * (containerSize * 0.25 - cardSize)}`;
+};
+
+export const spreadCards = (ref: Ref<HTMLDivElement>, callback: () => void) => {
+  const container = typeof ref === 'function' ? null : ref?.current;
+	if ( !container ) return;
+
+
+  gsap.to('.card', {
+    x: () => getRandomPositionX(container.offsetWidth, CARD_WIDTH),
+    y: () => getRandomPositionY(container.offsetHeight, CARD_HEIGHT),
+    rotation: () => getRandomRotation(),
+    transformOrigin: '50% 50%',
+    duration: 1,
+    stagger: 0.4,
+    onComplete: callback,
+  });
+};
+
+export const drawRandomCards = (numberOfCards = 3) => {
+  const randomCards: string[] = [];
+
+  while (randomCards.length < numberOfCards) {
+    const randomIndex = Math.floor(Math.random() * tarotCards.length);
+    const randomCard = `${Math.random() > 0.5 ? 'odwrócona ' : ''}${
+      tarotCards[randomIndex]
+    }`;
+
+    if (!randomCards.includes(randomCard)) {
+      randomCards.push(randomCard);
+    }
+  }
+
+  return randomCards;
 };

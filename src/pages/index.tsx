@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
   return (
-    <div className="flex w-screen  justify-center h-screen items-center">
+    <div className="flex w-screen  justify-center min-h-screen items-center">
       <Link href={'./tarot'} className={'w-[200px] h-[100px]'}>
         <div className="text-white">Tarot</div>
       </Link>

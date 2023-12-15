@@ -5,12 +5,21 @@ import tarotCards from './all-cards';
 export const NUMBER_OF_CARDS = 20; // You can adjust the number of cards
 export const CARD_WIDTH = 100;
 export const CARD_HEIGHT = 160;
+export const CARD_BACKGROUND_COLOR = '#3498db';
 export const getRandomRotation = () => Math.random() * 360;
+export const getAngle = () => Math.floor(Math.random() * 5);
+export const getRotation = () => {
+  const angle = getAngle();
+  return Math.random() > 0.5 ? angle : -1 * angle;
+};
+export const rotations = Array.from({ length: NUMBER_OF_CARDS }, (_, index) =>
+  getRotation(),
+);
 
 export const flipCard = (
   cardId: string,
   index: number,
-  backgroundUrl = '/fool.jpg',
+  backgroundUrl?: string,
 ) => {
   if (!cardId) return;
 
@@ -27,13 +36,18 @@ export const flipCard = (
     duration: 0.5,
     ease: 'power2.inOut',
     onComplete: () => {
-      gsap.set(card, {
-        zIndex: index,
-        backgroundColor: '#fff',
-        // background: `url(${backgroundUrl}) no-repeat center center / cover`,
-      });
-
-      if (card) card.textContent = backgroundUrl;
+      if (!backgroundUrl) {
+        gsap.set(card, {
+          zIndex: index,
+          backgroundColor: CARD_BACKGROUND_COLOR,
+        });
+      } else {
+        gsap.set(card, {
+          zIndex: index,
+          backgroundColor: '#fff',
+          // background: `url(${backgroundUrl}) no-repeat center center / cover`,
+        });
+      }
     },
   });
 
@@ -104,8 +118,6 @@ export const show3cards = (
   const containerWidth = container.offsetWidth;
   const containerHeight = container.offsetHeight;
 
-  console.log(containerHeight, containerWidth);
-
   gsap.to('.card', {
     x: (i, el) => {
       return selectedCards.includes(el.id) ? 0 : containerWidth * 1.5;
@@ -141,8 +153,7 @@ const getRandomPositionX = (containerSize: number, cardSize: number) => {
 
 export const spreadCards = (ref: Ref<HTMLDivElement>, callback: () => void) => {
   const container = typeof ref === 'function' ? null : ref?.current;
-	if ( !container ) return;
-
+  if (!container) return;
 
   gsap.to('.card', {
     x: () => getRandomPositionX(container.offsetWidth, CARD_WIDTH),
@@ -170,4 +181,20 @@ export const drawRandomCards = (numberOfCards = 3) => {
   }
 
   return randomCards;
+};
+
+export const stackCards = (flippedCards: string[]) => {
+  flippedCards?.forEach((cardId, index) => flipCard(cardId, index));
+
+  gsap.set('.card', { opacity: 1, boxShadow: 'unset' });
+
+  gsap.to('.card', {
+    duration: 0.5,
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    stagger: 0.4,
+    rotation: (index) => rotations[index],
+    ease: 'power2.inOut',
+  });
 };

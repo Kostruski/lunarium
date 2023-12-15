@@ -26,11 +26,11 @@ function runMiddleware(
       if (result instanceof Error) {
         res.status(404);
         return reject(result);
-			}
+      }
 
-			const answer = await mainAi( req.body.question, req.body.cards );
+      const answer = await mainAi(req.body.question, req.body.cards);
 
-			res.status(200).json({ answer });
+      res.status(200).json({ answer });
       resolve();
     });
   });
@@ -41,7 +41,11 @@ export default async function handler(
   res: NextApiResponse<Data>,
 ) {
   try {
-    await runMiddleware(req, res, cors);
+    // await runMiddleware(req, res, cors);
+
+    setTimeout(() => {
+      res.status(200).json({ answer: 'Mock response' });
+    }, 3000);
   } catch (e) {
     console.log(e);
     res.status(500).json({ answer: 'Internal Server Error' });

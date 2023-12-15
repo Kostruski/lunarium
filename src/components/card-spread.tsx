@@ -1,30 +1,24 @@
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
+  CARD_BACKGROUND_COLOR,
   CARD_HEIGHT,
   CARD_WIDTH,
   NUMBER_OF_CARDS,
   flipCard,
+  rotations,
   show3cards,
 } from '../utils/card-utils';
+import { Steps } from '../utils/types';
 type CardSpreadProps = {
-  setCardsClickable: (v: boolean) => void;
   drawnCards: string[];
-  cardsClickable: boolean;
+  setStep: (step: Steps) => void;
+  step: Steps;
+  flippedCards: string[];
+  setFlippedCards: React.Dispatch<React.SetStateAction<string[]>>;
 };
-
-const getAngle = () => Math.floor(Math.random() * 5);
-const getRotation = () => {
-  const angle = getAngle();
-  return Math.random() > 0.5 ? angle : -1 * angle;
-};
-const rotations = Array.from({ length: NUMBER_OF_CARDS }, (_, index) =>
-  getRotation(),
-);
 
 const CardSpread = forwardRef<HTMLDivElement, CardSpreadProps>(
-  ({ setCardsClickable, drawnCards, cardsClickable }, ref) => {
-    const [flippedCards, setFlippedCards] = useState<string[]>([]);
-
+  ({ setStep, drawnCards, step, flippedCards, setFlippedCards }, ref) => {
     const clickHandler = useCallback(
       (id: string) => {
         setFlippedCards((cardCount) => [...cardCount, id]);
@@ -36,9 +30,12 @@ const CardSpread = forwardRef<HTMLDivElement, CardSpreadProps>(
 
     useEffect(() => {
       if (ref && flippedCards.length === 3) {
-        show3cards(flippedCards, ref, () => setCardsClickable(false));
+        console.log(flippedCards);
+        show3cards(flippedCards, ref, () => setStep('CARDS_CHOSEN'));
       }
     }, [flippedCards, ref]);
+
+    const cardsClickable = step === 'CARDS_DEALT';
 
     return (
       <>
@@ -56,7 +53,7 @@ const CardSpread = forwardRef<HTMLDivElement, CardSpreadProps>(
                 width: CARD_WIDTH,
                 position: 'absolute',
                 height: CARD_HEIGHT,
-                backgroundColor: '#3498db',
+                backgroundColor: CARD_BACKGROUND_COLOR,
                 borderRadius: '8px',
                 border: '1px solid black',
                 left: '50%',

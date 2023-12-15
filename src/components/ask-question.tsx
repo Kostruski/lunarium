@@ -30,7 +30,7 @@ const AskQuestion = forwardRef<HTMLInputElement, AskQuestionProps>(
           required
         />
         <button type="submit" className="bg-white text-black p-2 rounded mt-5">
-          Zadaj pytanie, a następnie wybierz karty
+          Zadaj pytanie
         </button>
       </form>
     );

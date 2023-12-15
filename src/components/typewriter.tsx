@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 type TypewriterProps = {
   text: string;
   delay: number;
+  onComplete?: () => void;
 };
 
-const Typewriter = ({ text, delay }: TypewriterProps) => {
+const Typewriter = ({ text, delay, onComplete }: TypewriterProps) => {
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -17,6 +18,8 @@ const Typewriter = ({ text, delay }: TypewriterProps) => {
       }, delay);
 
       return () => clearTimeout(timeout);
+    } else {
+      onComplete && onComplete();
     }
   }, [currentIndex, delay, text]);
 

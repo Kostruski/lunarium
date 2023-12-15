@@ -1,8 +1,4 @@
-import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import axios from 'axios';
-import { useRef, useState } from 'react';
-import CardSpread from '../components/card-spread';
 import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });

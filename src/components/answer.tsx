@@ -3,19 +3,22 @@ import Typewriter from './typewriter';
 
 interface AnswerProps {
   message: string;
+  onComplete?: () => void;
 }
 
 const PRINT_DELAY = 50;
 
-const Answer: React.FC<AnswerProps> = ({ message }) => {
+const Answer: React.FC<AnswerProps> = ({ message, onComplete }) => {
   console.log('Answer', message);
 
   return (
-    <div
-      className={`w-full text-white p-5`}
-    >
+    <div className={`w-full text-white p-5`}>
       <p className={`overflow-hidden p-5 rounded bg-black bg-opacity-75 `}>
-        <Typewriter text={message} delay={PRINT_DELAY} />
+        <Typewriter
+          text={message}
+          delay={PRINT_DELAY}
+          onComplete={onComplete}
+        />
       </p>
     </div>
   );

@@ -13,7 +13,9 @@ const Answer: React.FC<AnswerProps> = ({ message, onComplete }) => {
 
   return (
     <div className={`w-full text-white p-5`}>
-      <p className={`overflow-hidden p-5 rounded bg-black bg-opacity-75 `}>
+      <p
+        className={`overflow-hidden p-5 rounded bg-black bg-opacity-75 max-h-[70vh]`}
+      >
         <Typewriter
           text={message}
           delay={PRINT_DELAY}

@@ -41,11 +41,11 @@ export default async function handler(
   res: NextApiResponse<Data>,
 ) {
   try {
-    // await runMiddleware(req, res, cors);
+    await runMiddleware(req, res, cors);
 
-    setTimeout(() => {
-      res.status(200).json({ answer: 'Mock response' });
-    }, 3000);
+    // setTimeout(() => {
+    //   res.status(200).json({ answer: 'Mock response' });
+    // }, 3000);
   } catch (e) {
     console.log(e);
     res.status(500).json({ answer: 'Internal Server Error' });

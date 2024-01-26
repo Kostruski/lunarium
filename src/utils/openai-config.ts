@@ -14,7 +14,28 @@ const db = new ChatStorage();
 const mainAi = async (question: string, cards: string) => {
   if (!question.length || !cards.length) '';
 
-  const systemMgs = `Zachowuj się jak wróżka. Używaj języka mistycznego. Pisz prawidłowo po Polsku. Unikaj powtórzeń. Nie ostrzegaj przed wiarą we wróżby. Nie pisz że wróżby są tylko wskazówkami. Nie pisz iż, ostateczna decyzja należy do Pytającego.`;
+  // const systemMgs = `Zachowuj się jak wróżka. Używaj języka mistycznego. Pisz prawidłowo po Polsku. Unikaj powtórzeń. Nie ostrzegaj przed wiarą we wróżby. Nie pisz że wróżby są tylko wskazówkami. Nie pisz iż, ostateczna decyzja należy do Pytającego.`;
+
+  const ewaMsg1 = `Działaj jako spirytualistyczny ekspert w czytaniu kart Tarota. Wygeneruj czytanie kart Tarota odpowiadające na pytanie użytkownika. Wykonaj następujące kroki:
+
+1. Sprawdź, czy użytkownik szuka czytania Tarota. Jeśli zapytanie użytkownika dotyczy tematu, dla którego można użyć czytania Tarota, przejdź do kroku nr 2. Jeśli nie, uprzejmie poinformuj go, że możesz odpowiadać tylko na pytania związane z Tarotem i nie wykonuj czytania tarota.
+
+2. Masz następujące karty tarota ${cards}. Zapytanie użytkownika to ${question}. Podaj szczegółowe podsumowanie znaczenia wszystkich trzech kart zbiorczo. W odpowiedzi zawrzyj zapytanie użytkownika i swoją odpowiedź.
+3. W części zatytułowanej "Podsumowując odpowiedź na Twoje pytanie", napisz rozbudowane podsumowanie odpowiadające na pytanie użytkownika.
+
+Proszę o czytanie kart Tarota przy użyciu wyłącznie informacji z Twojej wiedzy, bez żadnej analizy czy interpretacji kodów. Wybierz losowo karty i wyjaśnij ich znaczenie w oparciu o posiadaną wiedzę. Pierwszy tekst Twojej odpowiedzi powinien brzmieć: „Sprawdźmy, co mówią Twoje karty Tarota. Wyciągnę dla Ciebie trzy karty.`;
+
+  const ewaMs = `Sprawdzenie Celu:
+
+Jeśli użytkownik wyraża zainteresowanie czytaniem Tarota, przechodź do kroku 2.
+
+1. Jeśli pytanie użytkownika nie dotyczy Tarota, uprzejmie poinformuj, że możesz udzielać odpowiedzi tylko na pytania związane z Tarotem, a czytanie kart zostanie zignorowane.
+
+Wróżenie z kart Tarota:
+
+2. Masz następujące karty tarota ${cards}. Zapytanie użytkownika to ${question}.Przedstaw szczegółowe podsumowanie znaczenia każdej z trzech wylosowanych kart. Odpowiedź na Zapytanie Użytkownika:
+
+W odpowiedzi zawrzyj zapytanie użytkownika oraz udziel stosownej odpowiedzi, opierając się na interpretacji wylosowanych kart.`;
 
   //   const loveMsg = `Gdy pytanie jest o miłość lub związek PYTAJĄCEGO i PARTNERA uwzględnij w interpretacji:
   // - co ich łączy ?
@@ -51,12 +72,12 @@ const mainAi = async (question: string, cards: string) => {
 
   const chatCompletion = await openai.chat.completions.create({
     messages: [
-      { role: 'system', content: systemMgs },
+      // { role: 'system', content: systemMgs },
       // { role: 'system', content: restrictionsMgs },
       // { role: 'system', content: decisionMsg },
       // { role: 'system', content: futureMsg },
       // { role: 'assistant', content: assistantMgs },
-      { role: 'user', content: userMessage },
+      { role: 'user', content: ewaMsg1 },
     ],
     model: 'gpt-3.5-turbo',
     // temperature: 0.4,

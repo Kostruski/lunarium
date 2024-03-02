@@ -5,7 +5,7 @@
 @import 'tailwindcss/utilities';
 
 * {
-	box-sizing: border-box !important;
+  box-sizing: border-box !important;
 }
 
 .star {
@@ -18,8 +18,7 @@
   background-color: #080808;
   min-height: 100vh;
   width: 100%;
-  overflow: hidden;
-  position: absolute;
+  position: relative;
   background-image: url('/space.jpg'); /* Replace 'your-image-url.jpg' with the URL or path to your image */
   background-size: cover;
   background-position: center;
@@ -27,7 +26,7 @@
 }
 
 #container {
-  position: absolute;
+  position: relative;
   width: 100%;
   min-height: 100vh;
 }

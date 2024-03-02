@@ -20,7 +20,7 @@ export function createStar(): HTMLDivElement | null {
 
   // Set random position, size, and opacity for the star
   const xPos: number = getRandomInt(0, container.clientWidth);
-  const yPos: number = getRandomInt(0, container.clientHeight);
+  const yPos: number = getRandomInt(0, container.clientHeight * 1.5);
   const size: number = getRandomInt(1, 4);
   const opacity: number = Math.random();
 

@@ -20,6 +20,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/cors": "^2.8.17",
     "@types/node": "^20",
     "@types/react": "^18.2.31",

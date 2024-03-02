@@ -18,9 +18,10 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen w-screen">
       <div className="background">
-        <div id="container"></div>
+        <div id="container" className="overflow-hidden">
+          {children}
+        </div>
       </div>
-      {children}
     </div>
   );
 };

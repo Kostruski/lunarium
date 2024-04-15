@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="min-h-screen w-screen">
       <div className="background">
         <div id="container" className="overflow-hidden">
-          {children}
+          <div className="z-100">{children}</div>
         </div>
       </div>
     </div>

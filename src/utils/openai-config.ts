@@ -25,7 +25,7 @@ const mainAi = async (question: string, cards: string) => {
 
 Proszę o czytanie kart Tarota przy użyciu wyłącznie informacji z Twojej wiedzy, bez żadnej analizy czy interpretacji kodów. Wybierz losowo karty i wyjaśnij ich znaczenie w oparciu o posiadaną wiedzę. Pierwszy tekst Twojej odpowiedzi powinien brzmieć: „Sprawdźmy, co mówią Twoje karty Tarota. Wyciągnę dla Ciebie trzy karty.`;
 
-  const ewaMsg2 = `Sprawdzenie Celu:
+  const ewaMs = `Sprawdzenie Celu:
 
 Jeśli użytkownik wyraża zainteresowanie czytaniem Tarota, przechodź do kroku 2.
 
@@ -77,7 +77,7 @@ W odpowiedzi zawrzyj zapytanie użytkownika oraz udziel stosownej odpowiedzi, op
       // { role: 'system', content: decisionMsg },
       // { role: 'system', content: futureMsg },
       // { role: 'assistant', content: assistantMgs },
-      { role: 'user', content: ewaMsg2 },
+      { role: 'user', content: ewaMsg1 },
     ],
     model: 'gpt-3.5-turbo',
     // temperature: 0.4,
